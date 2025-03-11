@@ -60,17 +60,13 @@ public class BookController {
     }
 
     // Update book availability (borrow or return)
-    @PutMapping("/{id}/availability") // Used for update requests
-    public Book updateBookAvailability(@PathVariable int id, @RequestBody boolean isAvailable) { // @RequestBody is used to take input from the user 
-        Optional<Book> optionalBook = bookRepository.findById(id);
-        if (optionalBook.isPresent()) { // is.Present is from the optional import
-            Book book = optionalBook.get();
-            book.setIsAvailable(isAvailable);
-            return bookRepository.save(book); // Updates the availability
-        } else {
-            return null; // If book not found, return null (this should be improved later)
-        }
+    @PutMapping("/{id}/availability") // Handles PUT requests for updating book availability.
+    public Book updateBookAvailability(@PathVariable int id, @RequestBody boolean isAvailable) { 
+        Book book = bookRepository.findById(id).orElseThrow(() -> new RuntimeException("Book not found")); // If the book is not found, it throws a RuntimeException with the message "Book not found".
+        book.setIsAvailable(isAvailable); // Updates availability status.
+        return bookRepository.save(book); // Saves the updated book in the database.
     }
+
 
     // Delete a book
     @DeleteMapping("/{id}") // For delete requests
