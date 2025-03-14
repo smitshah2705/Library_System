@@ -4,7 +4,7 @@ package com.librarysystem.library_system;
 import java.util.List; // This is a return type for a return multiple objects
 import java.util.Optional; // This is a return type for returning a single value or null. Used for cases when a book is not found
 
-import org.springframework.beans.factory.annotation.Autowired; // Used to inject dependiecis so in this case it brings in book repository
+import org.springframework.beans.factory.annotation.Autowired; // Used to inject the BookRepository dependency so that it can be used to interact with the database in the controller
 //Handles HTTP requests
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,7 +44,7 @@ public class BookController {
      // Search books by author
      @GetMapping("/author/{author}")
      public List<Book> getBooksByAuthor(@PathVariable String author) {
-         return bookRepository.findByAuthor(author);
+        return bookRepository.findByAuthor(author);
      }
 
      // Search books by availability

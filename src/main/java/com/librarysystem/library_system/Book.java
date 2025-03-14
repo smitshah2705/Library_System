@@ -3,7 +3,7 @@ package com.librarysystem.library_system;
 import jakarta.persistence.Entity; //Spring boot will treat it as a table now. Each instance will be a new row.
 import jakarta.persistence.Id;//Creates a primary key for the table
 import jakarta.persistence.GeneratedValue; //This goes with the primary key. Everytime a new instace is added,it automatically will add a primary key value
-import jakarta.persistence.GenerationType;//Will be used for what thetype of the primaray key will be 
+import jakarta.persistence.GenerationType;//Will be used for what the type of the primaray key will be 
 import java.util.Date;
 
 @Entity
