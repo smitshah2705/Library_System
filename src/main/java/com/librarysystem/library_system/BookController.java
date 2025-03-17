@@ -5,15 +5,7 @@ import java.util.List; // This is a return type for a return multiple objects
 import java.util.Optional; // This is a return type for returning a single value or null. Used for cases when a book is not found
 
 import org.springframework.beans.factory.annotation.Autowired; // Used to inject the BookRepository dependency so that it can be used to interact with the database in the controller
-//Handles HTTP requests
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;//Handles HTTP requests
 
 @RestController // Marks this as a controller handling HTTP requests.
 @RequestMapping("/books") // the base path for the URL of all the operations related to “books.”
@@ -54,7 +46,7 @@ public class BookController {
     }
 
     // Add a new book
-    @PostMapping // Used when submitting new data
+    @PostMapping // used when you need to send data to the server
     public Book addBook(@RequestBody Book book) {
         return bookRepository.save(book); // Saves the new book to the database
     }

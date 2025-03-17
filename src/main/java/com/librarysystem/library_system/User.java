@@ -13,13 +13,15 @@ public class User {
     
     private String username;
     private String password;
+    private String role;
 
     private User(){} // I made this a private constructor because I want users to must create a username and password. I still have a default construstor as it is required for JPA
     
-    public User(String username, String password)
+    public User(String username, String passwor, String role)
     {
         this.username = username;
         this.password = password;
+        this.role = role;
     }
 
     public int getId()
@@ -37,6 +39,10 @@ public class User {
         return password;
     }
 
+    public String getRole() {
+        return role;
+    }
+
     public void setUsername(String username)
     {
         this.username = username;
@@ -45,6 +51,10 @@ public class User {
     public void setPassword(String password)
     {
         this.password = password;
+    }
+
+    public void setRole(String role) {
+        this.role = role; 
     }
 
 }

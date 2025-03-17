@@ -11,10 +11,17 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public boolean authenticateUser(String username, String password)
+    public String authenticateUser(String username, String password)
     {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("There is no created account with this username")); // If the username is not found, it throws a RuntimeException with the message 
-        return password.equals(user.getPassword());
+        
+        if(password.equals(user.getPassword()))
+        {
+            return user.getRole();
+        }
+        else{
+            return null;
+        }
         
     }
 }
