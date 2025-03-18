@@ -16,24 +16,29 @@ public class Book {
     private String author;
     private boolean isAvailable;
     private Date borrowedDate;
+    private String borrowedBy;
 
+    public Book() {}
+    
     public Book(String title, String author)
     {
         this.title = title;
         this.author = author;
         this.isAvailable = true;
         this.borrowedDate = null;
+        this.borrowedBy = null;
     }
 
-    public Book(String title, String author, boolean isAvailable, Date borrowedDate)
+    public Book(String title, String author, boolean isAvailable, String oBy, Date borrowedDate)
     {
         this.title = title;
         this.author = author;
         this.isAvailable = isAvailable;
+        this.borrowedBy = borrowedBy;
         this.borrowedDate = borrowedDate;
     }
 
-    public int getID()
+    public int getId()
     {
         return id;
     }
@@ -48,14 +53,19 @@ public class Book {
         return author;
     }
 
-    public boolean getIsAvailable()
+    public boolean isAvailable()
     {
         return isAvailable;
     }
 
-    public Date getDate()
+    public Date getBorrowedDate()
     {
         return borrowedDate;
+    }
+
+    public String getBorrowedBy()
+    {
+        return borrowedBy;
     }
 
     public void setIsAvailable(boolean isAvailable)
@@ -63,9 +73,14 @@ public class Book {
         this.isAvailable = isAvailable;
     }
 
-    public void setBurrowedDate(Date borrowedDate)
+    public void setBorrowedDate(Date borrowedDate)
     {
-        this.borrowedDate = new Date();
+        this.borrowedDate = borrowedDate;
+    }
+
+    public void setBorrowedBy(String student)
+    {
+        this.borrowedBy = student;
     }
 
 
