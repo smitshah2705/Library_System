@@ -6,6 +6,11 @@ import java.util.Optional; // This is a return type for returning a single value
 
 import org.springframework.beans.factory.annotation.Autowired; // Used to inject the BookRepository dependency so that it can be used to interact with the database in the controller
 import org.springframework.web.bind.annotation.*;//Handles HTTP requests
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
+
+
 
 @RestController // Marks this as a controller handling HTTP requests.
 @RequestMapping("/books") // the base path for the URL of all the operations related to “books.”
@@ -41,7 +46,7 @@ public class BookController {
 
      // Search books by availability
     @GetMapping("/available/{isAvailable}")
-    public List<Book> getBooksByAvailability(@PathVariable boolean isAvailable) {
+    public List<Book> BooksByAvailability(@PathVariable boolean isAvailable) {
         return bookService.getBooksByAvailability(isAvailable);
     }
 
@@ -51,13 +56,23 @@ public class BookController {
         return bookService.addBook(book); // Saves the new book to the database
     }
 
-    
+    //Borrow a book
+    @PutMapping("/{id}/borrow") //Used to update the database
+    public String BorrowBook(@PathVariable int id, @RequestParam String studentName) { // Request Param is for Query parameters in the URL such as title=Bookname in the url
+        return bookService.borrowBook(id, studentName) ;
+    }
+
+    //Return a Book
+    @PutMapping("/{id}/return")
+    public String ReturnBook(@PathVariable int id) {
+        return bookService.returnBook(id);
+    }
 
 
     // Delete a book
     @DeleteMapping("/{id}") // For delete requests
-    public void deleteBook(@PathVariable int id) {
-        bookRepository.deleteById(id); // Deletes the book by ID
+    public String DeleteBook(@PathVariable int id) {
+        return bookService.deleteBook(id); // Deletes the book by ID
     }
 
 }

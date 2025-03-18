@@ -1,9 +1,13 @@
+//Contains logic. uses actions from the repository and conditions to make rules. It will handle the rules and conditions before applying the actions on the data
+//The controller can't directly connect with the reposiotry is because the controller's job is to handle HTTPrequest and it woul make the code too complicated ifyou also included business logic
+// so to make it mroeclean and easy to manage Services classes are used
+
 package com.librarysystem.library_system;
 
 import org.springframework.stereotype.Service;  // Import the @Service annotation to mark this class as a Spring service - whihc means this code contains logic
 
-import java.util.List;
-import java.util.Optional;
+import java.util.List; // Used to ouput more than one object
+import java.util.Optional; //It holds exactly one value and it doesnt not necessarily contain a value.
 
 import org.springframework.beans.factory.annotation.Autowired; // Used to inject dependency 
 
@@ -11,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired; // Used to inject
 public class BookService {
     @Autowired
     private BookRepository bookRepository;
+    private UserRepository userRepository;
 
     //Get all books
     public List<Book> getAllBooks()
@@ -38,7 +43,7 @@ public class BookService {
         return bookRepository.findByIsAvailable(isAvailable);
     }
 
-    public String borrowBook(int id, String studentName)
+    public String borrowBook(int id, String Username)
     {
         Book book = bookRepository.findById(id).orElseThrow(() -> new RuntimeException("Book not found"));
 
@@ -47,11 +52,19 @@ public class BookService {
             return "Book is already reserved.";
         }
 
+        //Find the USer by their Id
+        User user = userRepository.findByUsername(Username).orElseThrow(() -> new RuntimeException("User not found"));
+
+
         book.setIsAvailable(false); // Set the book as unavailable
-        book.setBorrowedBy(studentName); // Set the student who borrowed the book
+        book.setBorrowedBy(user); // Set the student who borrowed the book
         book.setBorrowedDate(new java.util.Date()); // Set the borrow date. creates a new Date object that represents the current date and time 
+        user.getBorrowedBooks().add(book); //Add the new book to the user's borrowed list
+        
         bookRepository.save(book); // Save the updated book record
+        userRepository.save(user); //Save the user updated database
         return "Book borrowed successfully.";
+
     }
 
     public String returnBook(int id)
@@ -62,6 +75,10 @@ public class BookService {
         {
             return "Book has already been returned.";
         }
+        User user = book.getBorrowedby();
+
+        user.getBorrowedBooks().remove(book);
+        userRepository.save(user);
 
         book.setIsAvailable(true);
         book.setBorrowedBy(null);
@@ -83,6 +100,7 @@ public class BookService {
         {
             bookRepository.deleteById(id);
             return "Book deleted successfully.";
+            
         }
         else{
             return "Book not found.";

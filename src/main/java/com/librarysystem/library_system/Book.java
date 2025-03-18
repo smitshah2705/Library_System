@@ -2,6 +2,7 @@ package com.librarysystem.library_system;
 
 import jakarta.persistence.Entity; //Spring boot will treat it as a table now. Each instance will be a new row.
 import jakarta.persistence.Id;//Creates a primary key for the table
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.GeneratedValue; //This goes with the primary key. Everytime a new instace is added,it automatically will add a primary key value
 import jakarta.persistence.GenerationType;//Will be used for what the type of the primaray key will be 
 import java.util.Date;
@@ -16,9 +17,11 @@ public class Book {
     private String author;
     private boolean isAvailable;
     private Date borrowedDate;
-    private String borrowedBy;
 
-    public Book() {}
+    @ManyToOne // This represents the relationship between Book enitity and User entity. It means many of book objects can be associated with one User
+    private User borrowedBy; 
+
+    public Book() {} //Required for Spring
     
     public Book(String title, String author)
     {
@@ -29,13 +32,13 @@ public class Book {
         this.borrowedBy = null;
     }
 
-    public Book(String title, String author, boolean isAvailable, String oBy, Date borrowedDate)
+    public Book(String title, String author, boolean isAvailable, Date borrowedDate, User borrowedBy)
     {
         this.title = title;
         this.author = author;
         this.isAvailable = isAvailable;
-        this.borrowedBy = borrowedBy;
         this.borrowedDate = borrowedDate;
+        this.borrowedBy = borrowedBy;
     }
 
     public int getId()
@@ -63,7 +66,7 @@ public class Book {
         return borrowedDate;
     }
 
-    public String getBorrowedBy()
+    public User getBorrowedby()
     {
         return borrowedBy;
     }
@@ -78,9 +81,9 @@ public class Book {
         this.borrowedDate = borrowedDate;
     }
 
-    public void setBorrowedBy(String student)
+    public void setBorrowedBy(User user)
     {
-        this.borrowedBy = student;
+        borrowedBy = user;
     }
 
 
