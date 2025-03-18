@@ -12,52 +12,46 @@ import org.springframework.web.bind.annotation.*;//Handles HTTP requests
 public class BookController {
     
     @Autowired
-    private BookRepository bookRepository; // Input the CRUD operations that we can now use 
+    private BookService bookService; 
     
     // Get all books
     @GetMapping // For get requests
-    public List<Book> getAllBooks()
+    public List<Book> AllBooks()
     {
-        return bookRepository.findAll();
+        return bookService.getAllBooks();
     }
 
     //Get a book by ID
     @GetMapping("/{id}") 
-    public Optional<Book> getBookById(@PathVariable int id) { // tells Spring to use the value from the URL 
-        return bookRepository.findById(id); 
+    public Optional<Book> BookById(@PathVariable int id) { // tells Spring to use the value from the URL 
+        return bookService.getBookById(id); 
     }
 
     //Get books by title
     @GetMapping("/title/{title}")
-    public List<Book> getBooksByTitle(@PathVariable String title) {
-        return bookRepository.findByTitle(title);
+    public List<Book> BooksByTitle(@PathVariable String title) {
+        return bookService.getBooksByTitle(title);
     }
 
      // Search books by author
      @GetMapping("/author/{author}")
-     public List<Book> getBooksByAuthor(@PathVariable String author) {
-        return bookRepository.findByAuthor(author);
+     public List<Book> BooksByAuthor(@PathVariable String author) {
+        return bookService.getBooksByAuthor(author);
      }
 
      // Search books by availability
     @GetMapping("/available/{isAvailable}")
     public List<Book> getBooksByAvailability(@PathVariable boolean isAvailable) {
-        return bookRepository.findByIsAvailable(isAvailable);
+        return bookService.getBooksByAvailability(isAvailable);
     }
 
     // Add a new book
     @PostMapping // used when you need to send data to the server
-    public Book addBook(@RequestBody Book book) {
-        return bookRepository.save(book); // Saves the new book to the database
+    public Book AddBook(@RequestBody Book book) {
+        return bookService.addBook(book); // Saves the new book to the database
     }
 
-    // Update book availability (borrow or return)
-    @PutMapping("/{id}/availability") // Handles PUT requests for updating book availability.
-    public Book updateBookAvailability(@PathVariable int id, @RequestBody boolean isAvailable) { 
-        Book book = bookRepository.findById(id).orElseThrow(() -> new RuntimeException("Book not found")); // If the book is not found, it throws a RuntimeException with the message "Book not found".
-        book.setIsAvailable(isAvailable); // Updates availability status.
-        return bookRepository.save(book); // Saves the updated book in the database.
-    }
+    
 
 
     // Delete a book

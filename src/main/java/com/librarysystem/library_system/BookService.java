@@ -19,7 +19,7 @@ public class BookService {
     }
 
     //Get a book by ID
-    public Optional<Book> getBookById(int id) { // tells Spring to use the value from the URL 
+    public Optional<Book> getBookById(int id) { 
         return bookRepository.findById(id); 
     }
 
@@ -63,7 +63,7 @@ public class BookService {
             return "Book has already been returned.";
         }
 
-        book.setIsAvailable(false);
+        book.setIsAvailable(true);
         book.setBorrowedBy(null);
         book.setBorrowedDate(null);
         bookRepository.save(book);
@@ -76,14 +76,6 @@ public class BookService {
     public Book addBook(Book book) {
         return bookRepository.save(book); // Saves the new book to the database
     }
-
-    // Update book availability (borrow or return)
-    public Book updateBookAvailability(int id, boolean isAvailable) { 
-        Book book = bookRepository.findById(id).orElseThrow(() -> new RuntimeException("Book not found")); // If the book is not found, it throws a RuntimeException with the message "Book not found".
-        book.setIsAvailable(isAvailable); // Updates availability status.
-        return bookRepository.save(book); // Saves the updated book in the database.
-    }
-
 
     // Delete a book
     public String deleteBook(int id) {
