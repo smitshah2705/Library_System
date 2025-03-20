@@ -6,9 +6,6 @@ import java.util.Optional; // This is a return type for returning a single value
 
 import org.springframework.beans.factory.annotation.Autowired; // Used to inject the BookRepository dependency so that it can be used to interact with the database in the controller
 import org.springframework.web.bind.annotation.*;//Handles HTTP requests
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PathVariable;
 
 
 
@@ -54,6 +51,12 @@ public class BookController {
     @PostMapping // used when you need to send data to the server
     public Book AddBook(@RequestBody Book book) {
         return bookService.addBook(book); // Saves the new book to the database
+    }
+
+    @GetMapping("/borrowedby/{username}")
+    public List<Book> GetBooksByUser(@PathVariable String username)
+    {
+        return bookService.getBooksByUser(username);
     }
 
     //Borrow a book

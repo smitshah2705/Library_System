@@ -9,4 +9,5 @@ public interface BookRepository extends JpaRepository<Book, Integer> { // JPaRep
     List<Book> findByAuthor(String author);
     List<Book> findByIsAvailable(boolean isAvailable);
     List<Book> findByTitle(String title);
+    List<Book> findByBorrowedby(User user);
 }

@@ -43,6 +43,12 @@ public class BookService {
         return bookRepository.findByIsAvailable(isAvailable);
     }
 
+    // Get all books borrowed by a User
+    public List<Book> getBooksByUser(String username){
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+        return bookRepository.findByBorrowedby(user);
+    }
+
     public String borrowBook(int id, String Username)
     {
         Book book = bookRepository.findById(id).orElseThrow(() -> new RuntimeException("Book not found"));
@@ -57,7 +63,7 @@ public class BookService {
 
 
         book.setIsAvailable(false); // Set the book as unavailable
-        book.setBorrowedBy(user); // Set the student who borrowed the book
+        book.setBorrowedBy(user); // Set the ID of the student who borrowed the book
         book.setBorrowedDate(new java.util.Date()); // Set the borrow date. creates a new Date object that represents the current date and time 
         user.getBorrowedBooks().add(book); //Add the new book to the user's borrowed list
         
