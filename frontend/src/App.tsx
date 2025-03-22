@@ -1,9 +1,15 @@
+import { Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import MyBookCollection from "./pages/MyBookCollection";
+
 function App() {
   return (
-    <div>
-      <h1>Library System</h1>
-      <p>Welcome to the library system frontend!</p>
-    </div>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/my-books" element={<MyBookCollection />} />
+    </Routes>
   );
 }
 
