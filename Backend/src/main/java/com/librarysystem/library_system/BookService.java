@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired; // Used to inject
 public class BookService {
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
     //Get all books

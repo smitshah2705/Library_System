@@ -18,63 +18,63 @@ public class BookController {
     
     // Get all books
     @GetMapping // For get requests
-    public List<Book> AllBooks()
+    public List<Book> getAllBooks()
     {
         return bookService.getAllBooks();
     }
 
     //Get a book by ID
     @GetMapping("/{id}") 
-    public Optional<Book> BookById(@PathVariable int id) { // tells Spring to use the value from the URL 
+    public Optional<Book> getBookById(@PathVariable int id) { // tells Spring to use the value from the URL 
         return bookService.getBookById(id); 
     }
 
     //Get books by title
     @GetMapping("/title/{title}")
-    public List<Book> BooksByTitle(@PathVariable String title) {
+    public List<Book> getBooksByTitle(@PathVariable String title) {
         return bookService.getBooksByTitle(title);
     }
 
      // Search books by author
      @GetMapping("/author/{author}")
-     public List<Book> BooksByAuthor(@PathVariable String author) {
+     public List<Book> getBooksByAuthor(@PathVariable String author) {
         return bookService.getBooksByAuthor(author);
      }
 
      // Search books by availability
     @GetMapping("/available/{isAvailable}")
-    public List<Book> BooksByAvailability(@PathVariable boolean isAvailable) {
+    public List<Book> getBooksByAvailability(@PathVariable boolean isAvailable) {
         return bookService.getBooksByAvailability(isAvailable);
     }
 
     // Add a new book
     @PostMapping // used when you need to send data to the server
-    public Book AddBook(@RequestBody Book book) {
+    public Book addBook(@RequestBody Book book) {
         return bookService.addBook(book); // Saves the new book to the database
     }
 
     @GetMapping("/borrowedby/{username}")
-    public List<Book> GetBooksByUser(@PathVariable String username)
+    public List<Book> getBooksByUser(@PathVariable String username)
     {
         return bookService.getBooksByUser(username);
     }
 
     //Borrow a book
     @PutMapping("/{id}/borrow") //Used to update the database
-    public String BorrowBook(@PathVariable int id, @RequestParam String studentName) { // Request Param is for Query parameters in the URL such as title=Bookname in the url
+    public String borrowBook(@PathVariable int id, @RequestParam String studentName) { // Request Param is for Query parameters in the URL such as title=Bookname in the url
         return bookService.borrowBook(id, studentName) ;
     }
 
     //Return a Book
     @PutMapping("/{id}/return")
-    public String ReturnBook(@PathVariable int id) {
+    public String returnBook(@PathVariable int id) {
         return bookService.returnBook(id);
     }
 
 
     // Delete a book
     @DeleteMapping("/{id}") // For delete requests
-    public String DeleteBook(@PathVariable int id) {
+    public String deleteBook(@PathVariable int id) {
         return bookService.deleteBook(id); // Deletes the book by ID
     }
 

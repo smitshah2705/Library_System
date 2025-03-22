@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @SpringBootTest
@@ -24,12 +25,15 @@ class BookServiceTest {
     @Test
     void testGetBooksByUser() {
         // Arrange: Create mock data
-        User mockUser = new User("JohnDoe", "password123");
-        Book book1 = new Book("Title 1", "Author 1", true);
-        Book book2 = new Book("Title 2", "Author 2", false);
-        book1.setBorrowedby(mockUser);
-        book2.setBorrowedby(mockUser);
-        
+        User mockUser = new User("JohnDoe", "password123", "Student");
+
+        // Create Date object for borrowedDate (or use current date)
+        Date borrowedDate = new Date(); 
+
+        // Create Book objects using the correct constructor
+        Book book1 = new Book("Title 1", "Author 1", true, borrowedDate, mockUser);
+        Book book2 = new Book("Title 2", "Author 2", true, borrowedDate, mockUser);
+
         // Mock the repository to return the books for the user
         when(bookRepository.findByBorrowedby(mockUser)).thenReturn(Arrays.asList(book1, book2));
 

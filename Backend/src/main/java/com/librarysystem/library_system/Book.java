@@ -66,7 +66,7 @@ public class Book {
         return borrowedDate;
     }
 
-    public User getBorrowedby()
+    public User getBorrowedBy()
     {
         return borrowedBy;
     }

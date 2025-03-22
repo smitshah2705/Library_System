@@ -22,7 +22,7 @@ public class User {
 
     private User(){} // I made this a private constructor because I want users to must create a username and password. I still have a default construstor as it is required for JPA
     
-    public User(String username, String passwor, String role)
+    public User(String username, String password, String role)
     {
         this.username = username;
         this.password = password;
