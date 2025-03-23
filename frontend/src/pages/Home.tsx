@@ -1,10 +1,8 @@
-import React from "react";
-
 function Home() {
-    return ( 
+    return (
         <div>
-            <h1>Welcome to the TES Library System!</h1>
-            <p>Manage your beloved books here!</p>
+            <h1>Welcome to the TES Library!</h1>
+            <p>Manage your books here!</p>
         </div>
     );
 }
