@@ -8,6 +8,7 @@ function App() {
     <>
       {currentPage === "home" ? (
         <>
+          <img src="/teslogo.jpg" alt="TES" width="100" className="logo"/>
           <h1>Welcome to the TES Library!</h1>
           <p>
             Manage your books here!
