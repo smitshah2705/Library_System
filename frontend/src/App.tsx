@@ -1,10 +1,28 @@
+import { useState } from 'react'
+import './App.css'
+import Login from "./pages/Login"
+
 function App() {
+  const [currentPage, setCurrentPage] = useState("home");
   return (
-    <div>
-      <h1>Library System</h1>
-      <p>Welcome to the library system frontend!</p>
-    </div>
-  );
+    <>
+      {currentPage === "home" ? (
+        <>
+          <img src="/teslogo.jpg" alt="TES" width="100" className="logo"/>
+          <h1>Welcome to the TES Library!</h1>
+          <p>
+            Manage your books here!
+          </p>
+          <button onClick={() => setCurrentPage("login")}>Go to Login</button>
+        </>
+      ) : (
+        <>
+          <Login />
+          <button onClick={() => setCurrentPage("home")}>Back to Home</button>
+        </>
+      )}
+    </>
+  )
 }
 
-export default App;
+export default App
