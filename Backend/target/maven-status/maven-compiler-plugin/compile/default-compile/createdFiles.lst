@@ -1,0 +1,10 @@
+com/librarysystem/library_system/User.class
+com/librarysystem/library_system/UserController.class
+com/librarysystem/library_system/UserRepository.class
+com/librarysystem/library_system/BookController.class
+com/librarysystem/library_system/Book.class
+com/librarysystem/library_system/BookRepository.class
+com/librarysystem/library_system/BookService.class
+com/librarysystem/library_system/UserService.class
+com/librarysystem/library_system/LoginRequest.class
+com/librarysystem/library_system/LibrarySystemApplication.class
