@@ -83,7 +83,7 @@ public class BookService {
         {
             return "Book has already been returned.";
         }
-        User user = book.getBorrowedby();
+        User user = book.getBorrowedBy();
 
         user.getBorrowedBooks().remove(book);
         userRepository.save(user);
