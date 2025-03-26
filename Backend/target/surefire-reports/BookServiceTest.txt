@@ -1,0 +1,12 @@
+-------------------------------------------------------------------------------
+Test set: BookServiceTest
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.674 s <<< FAILURE! -- in BookServiceTest
+BookServiceTest.testBorrowBook_Success -- Time elapsed: 0.658 s <<< ERROR!
+java.lang.NullPointerException: Cannot invoke "java.util.List.add(Object)" because the return value of "com.librarysystem.library_system.User.getBorrowedBooks()" is null
+	at com.librarysystem.library_system.BookService.borrowBook(BookService.java:70)
+	at BookServiceTest.testBorrowBook_Success(BookServiceTest.java:59)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+
