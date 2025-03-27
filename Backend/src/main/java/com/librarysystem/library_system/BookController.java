@@ -25,7 +25,7 @@ public class BookController {
 
     //Get a book by ID
     @GetMapping("/{id}") 
-    public Optional<Book> getBookById(@PathVariable int id) { // tells Spring to use the value from the URL 
+    public Optional<Book> getBookById(@PathVariable Integer id) { // tells Spring to use the value from the URL 
         return bookService.getBookById(id); 
     }
 
@@ -61,20 +61,20 @@ public class BookController {
 
     //Borrow a book
     @PutMapping("/{id}/borrow") //Used to update the database
-    public String borrowBook(@PathVariable int id, @RequestParam String studentName) { // Request Param is for Query parameters in the URL such as title=Bookname in the url
+    public String borrowBook(@PathVariable Integer id, @RequestParam String studentName) { // Request Param is for Query parameters in the URL such as title=Bookname in the url
         return bookService.borrowBook(id, studentName) ;
     }
 
     //Return a Book
     @PutMapping("/{id}/return")
-    public String returnBook(@PathVariable int id) {
+    public String returnBook(@PathVariable Integer id) {
         return bookService.returnBook(id);
     }
 
 
     // Delete a book
     @DeleteMapping("/{id}") // For delete requests
-    public String deleteBook(@PathVariable int id) {
+    public String deleteBook(@PathVariable Integer id) {
         return bookService.deleteBook(id); // Deletes the book by ID
     }
 

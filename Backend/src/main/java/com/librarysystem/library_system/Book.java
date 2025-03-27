@@ -46,6 +46,12 @@ public class Book {
         return id;
     }
 
+    //For Tets
+    public void setId(Integer ID)
+    {
+        id = ID;
+    }
+
     public String getTitle()
     {
         return title;

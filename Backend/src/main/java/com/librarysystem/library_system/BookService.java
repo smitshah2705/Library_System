@@ -26,7 +26,7 @@ public class BookService {
     }
 
     //Get a book by ID
-    public Optional<Book> getBookById(int id) { 
+    public Optional<Book> getBookById(Integer id) { 
         return bookRepository.findById(id); 
     }
 
@@ -51,7 +51,7 @@ public class BookService {
         return bookRepository.findByBorrowedby(user);
     }
 
-    public String borrowBook(int id, String Username)
+    public String borrowBook(Integer id, String Username)
     {
         Book book = bookRepository.findById(id).orElseThrow(() -> new RuntimeException("Book not found"));
 
@@ -75,7 +75,7 @@ public class BookService {
 
     }
 
-    public String returnBook(int id)
+    public String returnBook(Integer id)
     {
         Book book = bookRepository.findById(id).orElseThrow(() -> new RuntimeException("Book not found"));
 
@@ -103,7 +103,7 @@ public class BookService {
     }
 
     // Delete a book
-    public String deleteBook(int id) {
+    public String deleteBook(Integer id) {
         if(bookRepository.existsById(id))
         {
             bookRepository.deleteById(id);

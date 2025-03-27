@@ -6,19 +6,20 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.GeneratedValue; //This goes with the primary key. Everytime a new instace is added,it automatically will add a primary key value
 import jakarta.persistence.GenerationType;//Will be used for what the type of the primaray key will be 
 import java.util.List;
+import java.util.ArrayList; 
 
 @Entity
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     
     private String username;
     private String password;
     private String role;
 
     @OneToMany(mappedBy = "borrowedBy")
-    private List<Book> borrowedBooks;
+    private List<Book> borrowedBooks = new ArrayList<Book>(); 
 
     private User(){} // I made this a private constructor because I want users to must create a username and password. I still have a default construstor as it is required for JPA
     
@@ -29,9 +30,15 @@ public class User {
         this.role = role;
     }
 
-    public int getId()
+
+    public Integer getId()
     {
         return id;
+    }
+
+    public void setId(Integer ID)
+    {
+        id = ID;
     }
     
     public String getUsername()
@@ -66,8 +73,5 @@ public class User {
         return borrowedBooks;
     }
 
-    public void setBorrowedBooks(List<Book> borrowedBooks) {
-        this.borrowedBooks = borrowedBooks;
-    }
 
 }
