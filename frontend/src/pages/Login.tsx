@@ -1,4 +1,9 @@
+import { useState } from "react";
 function Login() {
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+
+    
     return (
         <div>
             <img src="/teslogotransparent.png" alt="TES" width="200" className="logo"/>
