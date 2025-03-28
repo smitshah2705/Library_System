@@ -78,10 +78,12 @@ class BookServiceTest {
         // Manually setting the ID for the test
         book.setId(1); // Set the ID manually for the test
 
-        Book savedBook = bookService.addBook(book);
+        String savedBook = bookService.addBook(book);
 
-        assertNotNull(savedBook);
-        assertEquals(1, savedBook.getId()); // Simulated ID should be 1
+        assertEquals("Book has been added successfully", savedBook); 
+        
+        List<Book> books = bookRepository.findAllBooks();
+        assertTrue(books.contains(book));
     }
 
     @Test
@@ -169,13 +171,13 @@ class BookServiceTest {
 
         when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
 
-        String nullrole = userService.authenticateUser("Smit", "wrongpassword");
+        String wrong = userService.authenticateUser("Smit", "wrongpassword");
 
-        assertNull(nullrole); // Check if the role is correctly returned
+        assertNull(wrong); // Check if the role is correctly returned
 
-        String correctrole = userService.authenticateUser("Smit", "120");
+        String correct = userService.authenticateUser("Smit", "120");
 
-        assertEquals("Student", correctrole);
+        assertEquals("Student", correct);
 
     }
 }

@@ -1,10 +1,10 @@
 package com.librarysystem.library_system;
 
-import jakarta.persistence.Entity; //Spring boot will treat it as a table now. Each instance will be a new row.
-import jakarta.persistence.Id;//Creates a primary key for the table
+import jakarta.persistence.Entity; 
+import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.GeneratedValue; //This goes with the primary key. Everytime a new instace is added,it automatically will add a primary key value
-import jakarta.persistence.GenerationType;//Will be used for what the type of the primaray key will be 
+import jakarta.persistence.GeneratedValue; 
+import jakarta.persistence.GenerationType;
 import java.util.List;
 import java.util.ArrayList; 
 
@@ -18,11 +18,13 @@ public class User {
     private String password;
     private String role;
 
-    @OneToMany(mappedBy = "borrowedBy")
-    private List<Book> borrowedBooks = new ArrayList<Book>(); 
-
-    private User(){} // I made this a private constructor because I want users to must create a username and password. I still have a default construstor as it is required for JPA
+    @OneToMany(mappedBy = "borrowedBy") //One to many relationship is used because oneuser can borrow multiple books.
+    private List<Book> borrowedBooks = new ArrayList<Book>();
     
+    private List<Book> overDueBooks = new ArrayList<Book>();
+
+    private User(){} 
+
     public User(String username, String password, String role)
     {
         this.username = username;
@@ -71,6 +73,11 @@ public class User {
 
     public List<Book> getBorrowedBooks() {
         return borrowedBooks;
+    }
+
+    public List<Book> getOverDueBooks()
+    {
+        return overDueBooks;
     }
 
 

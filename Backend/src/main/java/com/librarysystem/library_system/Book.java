@@ -1,11 +1,13 @@
 package com.librarysystem.library_system;
 
-import jakarta.persistence.Entity; //Spring boot will treat it as a table now. Each instance will be a new row.
+import jakarta.persistence.Entity; // User class will be treated as a table
 import jakarta.persistence.Id;//Creates a primary key for the table
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.GeneratedValue; //This goes with the primary key. Everytime a new instace is added,it automatically will add a primary key value
 import jakarta.persistence.GenerationType;//Will be used for what the type of the primaray key will be 
 import java.util.Date;
+import java.util.Calender;
 
 @Entity
 public class Book {
@@ -17,11 +19,14 @@ public class Book {
     private String author;
     private boolean isAvailable;
     private Date borrowedDate;
+    private Date dueDate;
+    private boolean overdue;
 
     @ManyToOne // This represents the relationship between Book enitity and User entity. It means many of book objects can be associated with one User
+    @JoinColumn(name = "user_id")
     private User borrowedBy; 
 
-    public Book() {} //Required for Spring
+    protected Book() {} //Required for Spring
     
     public Book(String title, String author)
     {
@@ -29,7 +34,9 @@ public class Book {
         this.author = author;
         this.isAvailable = true;
         this.borrowedDate = null;
+        this.dueDate = null;
         this.borrowedBy = null;
+        this.overdue = false;
     }
 
     public Book(String title, String author, boolean isAvailable, Date borrowedDate, User borrowedBy)
@@ -39,6 +46,14 @@ public class Book {
         this.isAvailable = isAvailable;
         this.borrowedDate = borrowedDate;
         this.borrowedBy = borrowedBy;
+        
+        Calender calender = Calendar.getInstance();
+        calender.setTime(borrowedDate);
+        calender.add(calender.DATE, 30);
+        this.dueDate = calender.getTime();
+
+        this.overdue = false;
+
     }
 
     public int getId()
@@ -77,6 +92,16 @@ public class Book {
         return borrowedBy;
     }
 
+    public Date getDueDate()
+    {
+        return dueDate;
+    }
+
+    public boolean getOverDue()
+    {
+        return overdue;
+    }
+
     public void setIsAvailable(boolean isAvailable)
     {
         this.isAvailable = isAvailable;
@@ -85,11 +110,21 @@ public class Book {
     public void setBorrowedDate(Date borrowedDate)
     {
         this.borrowedDate = borrowedDate;
+
+        Calender calender = Calendar.getInstance();
+        calender.setTime(borrowedDate);
+        calender.add(calender.DATE, 30);
+        dueDate = calender.getTime();
     }
 
     public void setBorrowedBy(User user)
     {
         borrowedBy = user;
+    }
+
+    public void setOverDue(Boolean overdue)
+    {
+        this.overdue = overdue;
     }
 
 

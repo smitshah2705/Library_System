@@ -6,8 +6,9 @@ package com.librarysystem.library_system;
 
 import org.springframework.stereotype.Service;  // Import the @Service annotation to mark this class as a Spring service - whihc means this code contains logic
 
-import java.util.List; // Used to ouput more than one object
+import java.util.List; 
 import java.util.Optional; //It holds exactly one value and it doesnt not necessarily contain a value.
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired; // Used to inject dependency 
 
@@ -19,36 +20,62 @@ public class BookService {
     @Autowired
     private UserRepository userRepository;
 
-    //Get all books
     public List<Book> getAllBooks()
     {
-        return bookRepository.findAll();
+        return bookRepository.findAllBooks();
     }
 
-    //Get a book by ID
     public Optional<Book> getBookById(Integer id) { 
         return bookRepository.findById(id); 
     }
 
-    //Get books by title
     public List<Book> getBooksByTitle(String title) {
         return bookRepository.findByTitle(title);
     }
 
-     // Search books by author
      public List<Book> getBooksByAuthor(String author) {
         return bookRepository.findByAuthor(author);
      }
 
-     // Search books by availability
     public List<Book> getBooksByAvailability(boolean isAvailable) {
         return bookRepository.findByIsAvailable(isAvailable);
     }
 
-    // Get all books borrowed by a User
     public List<Book> getBooksByUser(String username){
         User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
         return bookRepository.findByBorrowedby(user);
+    }
+
+    public List<Book> getBooksByOverDue()
+    {
+        return bookRepository.findOverDueBooks(true);
+    }
+
+    public List<Book> getBooksByOverDueForUser(String username)
+    {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+        return bookRepository.findOverDueBooksForUser(user,true);
+    }
+
+    public String checkOverdue(String username)
+    {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+        List<Book> borrowedbooks = user.getBorrowedBooks();
+
+        for(Book book : borrowedbooks)
+        {
+            if(book.getDueDate().compareTo(new Date()) < 0)
+            {
+                book.setOverDue(true);
+                user.getOverDueBooks().add(book);
+            }
+            else{
+                book.setOverDue(false);
+            }
+            bookRepository.save(book);
+        }
+        userRepository.save(user);
+        return "Books checked for overdue";
     }
 
     public String borrowBook(Integer id, String Username)
@@ -60,17 +87,16 @@ public class BookService {
             return "Book is already reserved.";
         }
 
-        //Find the USer by their Id
         User user = userRepository.findByUsername(Username).orElseThrow(() -> new RuntimeException("User not found"));
 
 
-        book.setIsAvailable(false); // Set the book as unavailable
+        book.setIsAvailable(false); 
         book.setBorrowedBy(user); // Set the ID of the student who borrowed the book
-        book.setBorrowedDate(new java.util.Date()); // Set the borrow date. creates a new Date object that represents the current date and time 
-        user.getBorrowedBooks().add(book); //Add the new book to the user's borrowed list
-        
-        bookRepository.save(book); // Save the updated book record
-        userRepository.save(user); //Save the user updated database
+        book.setBorrowedDate(new Date()); // Set the new borrow date
+        user.getBorrowedBooks().add(book); //Add the new book to the user borrowed list
+
+        bookRepository.save(book); // Save the updated book db
+        userRepository.save(user); //Save the user updated db
         return "Book borrowed successfully.";
 
     }
@@ -86,23 +112,26 @@ public class BookService {
         User user = book.getBorrowedBy();
 
         user.getBorrowedBooks().remove(book);
+        if(user.getOverDueBooks().contains(book))
+        {
+            user.getOverDueBooks().remove(book);
+        }
         userRepository.save(user);
 
         book.setIsAvailable(true);
         book.setBorrowedBy(null);
         book.setBorrowedDate(null);
+        book.setOverDue(false);
         bookRepository.save(book);
         return "Book has been returned successfully.";
 
     }
 
-
-    // Add a new book
-    public Book addBook(Book book) {
-        return bookRepository.save(book); // Saves the new book to the database
+    public String addBook(Book book) {
+        bookRepository.save(book);
+        return "Book has been added successfully";
     }
 
-    // Delete a book
     public String deleteBook(Integer id) {
         if(bookRepository.existsById(id))
         {
