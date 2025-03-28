@@ -169,9 +169,13 @@ class BookServiceTest {
 
         when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
 
-        String role = userService.authenticateUser("Smit", "120");
+        String nullrole = userService.authenticateUser("Smit", "wrongpassword");
 
-        assertEquals("Student", role); // Check if the role is correctly returned
+        assertNull(nullrole); // Check if the role is correctly returned
+
+        String correctrole = userService.authenticateUser("Smit", "120");
+
+        assertEquals("Student", correctrole);
 
     }
 }
