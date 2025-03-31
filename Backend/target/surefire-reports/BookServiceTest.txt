@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: BookServiceTest
 -------------------------------------------------------------------------------
-Tests run: 5, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 0.623 s <<< FAILURE! -- in BookServiceTest
-BookServiceTest.testBookCreation -- Time elapsed: 0.595 s <<< FAILURE!
+Tests run: 5, Failures: 2, Errors: 1, Skipped: 0, Time elapsed: 0.626 s <<< FAILURE! -- in BookServiceTest
+BookServiceTest.testBookCreation -- Time elapsed: 0.586 s <<< FAILURE!
 org.opentest4j.AssertionFailedError: expected: <true> but was: <false>
 	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
 	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
@@ -10,7 +10,18 @@ org.opentest4j.AssertionFailedError: expected: <true> but was: <false>
 	at org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:36)
 	at org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:31)
 	at org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:183)
-	at BookServiceTest.testBookCreation(BookServiceTest.java:86)
+	at BookServiceTest.testBookCreation(BookServiceTest.java:88)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+
+BookServiceTest.testReturnBook -- Time elapsed: 0.015 s <<< ERROR!
+java.lang.NullPointerException: date must not be null
+	at java.base/java.util.Objects.requireNonNull(Objects.java:246)
+	at java.base/java.util.Calendar.setTime(Calendar.java:1803)
+	at com.librarysystem.library_system.Book.setBorrowedDate(Book.java:115)
+	at com.librarysystem.library_system.BookService.returnBook(BookService.java:123)
+	at BookServiceTest.testReturnBook(BookServiceTest.java:123)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
@@ -23,7 +34,7 @@ org.opentest4j.AssertionFailedError: expected: <Student> but was: <null>
 	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:182)
 	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:177)
 	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1145)
-	at BookServiceTest.testPasswordTesting(BookServiceTest.java:180)
+	at BookServiceTest.testPasswordTesting(BookServiceTest.java:178)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)

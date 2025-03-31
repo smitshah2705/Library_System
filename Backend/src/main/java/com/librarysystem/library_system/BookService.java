@@ -57,7 +57,7 @@ public class BookService {
         return bookRepository.findOverDueBooksForUser(user,true);
     }
 
-    public String checkOverdue(String username)
+    public List<Book> checkOverdue(String username)
     {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
         List<Book> borrowedbooks = user.getBorrowedBooks();
@@ -75,7 +75,7 @@ public class BookService {
             bookRepository.save(book);
         }
         userRepository.save(user);
-        return "Books checked for overdue";
+        return user.getOverDueBooks();
     }
 
     public String borrowBook(Integer id, String Username)
