@@ -9,13 +9,17 @@ function Login() {
 
     const handleLogin = async () => {
         try {
+            
             const response = await fetch("http://localhost:8080/users/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, password }),
             });
+            
             const data = await response.text();
+            
 
+ 
             if (data === "Welcome, admin!") {
                 setUserRole("admin");
             } else if (data === "Welcome, student!") {
