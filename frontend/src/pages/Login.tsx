@@ -1,7 +1,7 @@
 import { useState } from "react";
 import './Login.css';
 import StudentHome from "./StudentHome";
-import AdminHome from "./adminhome";
+import AdminHome from "./AdminHome";
 function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -42,13 +42,13 @@ function Login() {
                 <p>Please enter your username and password:</p>
             </div>
             <div className="box">
-                    <div>
-                        <label className="text">Email: </label>
-                        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)}/>
+                    <div className="input-group">
+                        <label className="text">Username: </label>
+                        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className="input-field"/>
                     </div>
-                    <div>
+                    <div className="input-group">
                         <label className="text" >Password: </label>
-                        <input type="text"value={password} onChange={(e) => setPassword(e.target.value)}/>
+                        <input type="text"value={password} onChange={(e) => setPassword(e.target.value)} className="input-field"/>
                     </div>
                     <div>
                         <button className="small-button" onClick={handleLogin}>Submit</button>

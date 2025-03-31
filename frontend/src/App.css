@@ -42,3 +42,8 @@
 .read-the-docs {
   color: #888;
 }
+.nav-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
