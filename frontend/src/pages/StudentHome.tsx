@@ -3,25 +3,48 @@ import "./StudentHome.css";
 
 function StudentHome() {
     const [bookname, setBookname] = useState("");
-    const [books, setBooks] = useState<string[]>([]);
+    const [books, setBooks] = useState<{ id: number; title: string; author: string; isAvailable: boolean }[]>([]);
+    const [studentName] = useState("");
 
     const handleSearch = async () => {
         try {
-            /*
-            const response = await fetch("http://localhost:8080/users/search", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ bookname }),
-            });
+            /*   (this is the actual data to be fetched)
+           const response = await fetch(`http://localhost:8080/books/title/${encodeURIComponent(bookname)}`); 
             const data = await response.json();
+            setBooks(data)
             */
-
-            const data = ["book1", "book2", "book3"];
-            setBooks(data);
+            
+            /* Sample data for testing*/
+            const data = [
+                { title: "Harry Potter", author: "J.K. Rowling" },
+                { title: "1984", author: "George Orwell" },
+                { title: "Lord of the Rings", author: "J.R.R. Tolkien" }
+            ];
+            const filtered = data.filter(book => book.title.includes(bookname));
+            setBooks(filtered)
+            
         } catch (error) {
             alert("Sorry! Something went wrong!");
         }
     };
+
+    const handleBorrow = async () => {
+        try {
+        const response = await fetch(`http://localhost:8080/books/${id}/borrow?studentName=${encodeURIComponent(studentName)}`, {
+            method: "PUT"
+        });
+        alert("Book borrowed successfully!");
+    }
+        catch (error) {
+            alert("Error Occured, unable to borrow book")
+        }
+    }
+
+
+
+   
+
+
 
     return (
         <div className="student-home">
@@ -37,7 +60,15 @@ function StudentHome() {
                 {books.length > 0 ? (
                     <ul>
                         {books.map((book, index) => (
-                            <li key={index}>{book}</li>
+                            <li key={index}> 
+                                {book.title} 
+                                {book.author}
+                                {book.isAvailable ? (
+                                    <button onClick={() => handleBorrow(book.id)}>Borrow</button>
+                                ) : (
+                                    <p>Unavailable</p>
+                                )}
+                            </li>
                         ))}
                     </ul>
                 ) : (
