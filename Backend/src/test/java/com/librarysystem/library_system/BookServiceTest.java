@@ -78,6 +78,8 @@ class BookServiceTest {
         // Manually setting the ID for the test
         book.setId(1); // Set the ID manually for the test
 
+        when(bookRepository.findAllBooks()).thenReturn(new ArrayList<>(mockBookDatabase.values()));
+
         String savedBook = bookService.addBook(book);
 
         assertEquals("Book has been added successfully", savedBook); 
@@ -108,17 +110,13 @@ class BookServiceTest {
 
     @Test
     void testReturnBook() {
-        // Setting up a user with Integer ID
         User user = new User("Smit", "474", "Student");
         user.setId(userIdCounter++); // Manually set ID for the test
         mockUserDatabase.put(user.getId(), user); // Add user to mock database
 
-        // Setting up a book
-        Book book = new Book("Book1", "Author1");
+      
+        Book book = new Book("Book1", "Author1", false, new Date(), user );
         book.setId(bookIdCounter++); // Manually set ID for the test
-        book.setIsAvailable(false); // Simulate book being borrowed
-        book.setBorrowedBy(user); // Set user as the borrower
-        book.setBorrowedDate(new Date());
         mockBookDatabase.put(book.getId(), book);
 
         // Returning the book

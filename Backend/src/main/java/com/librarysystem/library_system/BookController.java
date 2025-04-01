@@ -65,16 +65,15 @@ public class BookController {
     }
 
     @PutMapping("/checkoverdue/{username}")
-    public String CheckOverdue(@PathVariable String username)
+    public List<Book> CheckOverdue(@PathVariable String username)
     {
-        bookService.CheckOverdue(username);
-        return "Check for overdue books completed";
+        return bookService.checkOverdue(username);
 
     }
 
     @PutMapping("/{id}/borrow") //Used to update the database
     public String borrowBook(@PathVariable Integer id, @RequestParam String studentName) { // Request Param is for Query parameters in the URL such as title=Bookname in the url
-        return bookService.borrowBook(id, studentName) ;
+        return bookService.borrowBook(id, studentName);
     }
 
     @PutMapping("/{id}/return")

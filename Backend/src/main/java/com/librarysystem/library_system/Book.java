@@ -7,7 +7,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.GeneratedValue; //This goes with the primary key. Everytime a new instace is added,it automatically will add a primary key value
 import jakarta.persistence.GenerationType;//Will be used for what the type of the primaray key will be 
 import java.util.Date;
-import java.util.Calender;
+import java.util.Calendar;
 
 @Entity
 public class Book {
@@ -47,10 +47,10 @@ public class Book {
         this.borrowedDate = borrowedDate;
         this.borrowedBy = borrowedBy;
         
-        Calender calender = Calendar.getInstance();
-        calender.setTime(borrowedDate);
-        calender.add(calender.DATE, 30);
-        this.dueDate = calender.getTime();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(borrowedDate);
+        calendar.add(calendar.DATE, 30);
+        this.dueDate = calendar.getTime();
 
         this.overdue = false;
 
@@ -111,10 +111,10 @@ public class Book {
     {
         this.borrowedDate = borrowedDate;
 
-        Calender calender = Calendar.getInstance();
-        calender.setTime(borrowedDate);
-        calender.add(calender.DATE, 30);
-        dueDate = calender.getTime();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(borrowedDate);
+        calendar.add(calendar.DATE, 30);
+        dueDate = calendar.getTime();
     }
 
     public void setBorrowedBy(User user)
