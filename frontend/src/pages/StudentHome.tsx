@@ -4,7 +4,7 @@ import "./StudentHome.css";
 function StudentHome() {
     const [bookname, setBookname] = useState("");
     const [books, setBooks] = useState<{ id: number; title: string; author: string; isAvailable: boolean }[]>([]);
-    const [studentName] = useState("");
+    const username = localStorage.getItem("username") || "";
 
     const handleSearch = async () => {
         try {
@@ -16,9 +16,9 @@ function StudentHome() {
             
             /* Sample data for testing*/
             const data = [
-                { title: "Harry Potter", author: "J.K. Rowling" },
-                { title: "1984", author: "George Orwell" },
-                { title: "Lord of the Rings", author: "J.R.R. Tolkien" }
+                { id: 123, title: "Harry Potter", author: "J.K. Rowling", isAvailable: true },
+                { id: 141, title: "1984", author: "George Orwell", isAvailable: true },
+                { id: 531, title: "Lord of the Rings", author: "J.R.R. Tolkien", isAvailable: false }
             ];
             const filtered = data.filter(book => book.title.includes(bookname));
             setBooks(filtered)
@@ -28,9 +28,9 @@ function StudentHome() {
         }
     };
 
-    const handleBorrow = async () => {
+    const handleBorrow = async (bookId: number) => {
         try {
-        const response = await fetch(`http://localhost:8080/books/${id}/borrow?studentName=${encodeURIComponent(studentName)}`, {
+        const response = await fetch(`http://localhost:8080/books/${bookId}/borrow?studentName=${encodeURIComponent(username)}`, {
             method: "PUT"
         });
         alert("Book borrowed successfully!");
