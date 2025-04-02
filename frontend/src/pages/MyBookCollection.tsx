@@ -41,7 +41,7 @@ function MyBookCollection() {
             <h1>My Books:</h1>
             <button onClick={handleBorrowed}>Load Borrowed Books</button>
             <button onClick={() => isOverDue(username)}>Check for Overdue Books</button>
-            <div className="book-list">
+            <div className="box">
                 {borrowed.length > 0 ? (
                     <ul>
                         {borrowed.map((book) => (
