@@ -111,16 +111,16 @@ class BookServiceTest {
     @Test
     void testReturnBook() {
         User user = new User("Smit", "474", "Student");
-        user.setId(userIdCounter++); // Manually set ID for the test
-        mockUserDatabase.put(user.getId(), user); // Add user to mock database
+        user.setId(1); // Manually set ID for the test
+        mockUserDatabase.put(1, user); // Add user to mock database
 
       
         Book book = new Book("Book1", "Author1", false, new Date(), user );
-        book.setId(bookIdCounter++); // Manually set ID for the test
-        mockBookDatabase.put(book.getId(), book);
+        book.setId(1); // Manually set ID for the test
+        mockBookDatabase.put(1, book);
 
         // Returning the book
-        String result = bookService.returnBook(book.getId());
+        String result = bookService.returnBook(1);
 
         assertEquals("Book has been returned successfully.", result);
         assertTrue(book.isAvailable());

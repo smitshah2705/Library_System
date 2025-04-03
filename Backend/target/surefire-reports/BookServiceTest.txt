@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: BookServiceTest
 -------------------------------------------------------------------------------
-Tests run: 5, Failures: 2, Errors: 1, Skipped: 0, Time elapsed: 0.626 s <<< FAILURE! -- in BookServiceTest
-BookServiceTest.testBookCreation -- Time elapsed: 0.586 s <<< FAILURE!
+Tests run: 5, Failures: 2, Errors: 1, Skipped: 0, Time elapsed: 0.648 s <<< FAILURE! -- in BookServiceTest
+BookServiceTest.testBookCreation -- Time elapsed: 0.605 s <<< FAILURE!
 org.opentest4j.AssertionFailedError: expected: <true> but was: <false>
 	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
 	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
@@ -15,7 +15,7 @@ org.opentest4j.AssertionFailedError: expected: <true> but was: <false>
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
 
-BookServiceTest.testReturnBook -- Time elapsed: 0.015 s <<< ERROR!
+BookServiceTest.testReturnBook -- Time elapsed: 0.019 s <<< ERROR!
 java.lang.NullPointerException: date must not be null
 	at java.base/java.util.Objects.requireNonNull(Objects.java:246)
 	at java.base/java.util.Calendar.setTime(Calendar.java:1803)
@@ -26,7 +26,7 @@ java.lang.NullPointerException: date must not be null
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
 
-BookServiceTest.testPasswordTesting -- Time elapsed: 0.005 s <<< FAILURE!
+BookServiceTest.testPasswordTesting -- Time elapsed: 0.004 s <<< FAILURE!
 org.opentest4j.AssertionFailedError: expected: <Student> but was: <null>
 	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
 	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
