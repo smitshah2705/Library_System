@@ -16,12 +16,15 @@ public class UserService {
     {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("There is no created account with this username")); // If the username is not found, it throws a RuntimeException with the message 
         
-        if(password.equals(user.getPassword()) && username.equals(user.getUsername()))
+        System.out.println(user.getPassword());
+        System.out.println(password);
+
+        if(password.equals(user.getPassword()))
         {
             return user.getRole();
         }
         else{
-            return "Wrong";
+            return "Incorrect";
         }
         
     }

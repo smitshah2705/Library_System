@@ -16,9 +16,9 @@ function Login() {
                 body: JSON.stringify({ username, password }),
             });
             
-            const data = await response.text();
+            const data = await response.json();
             
-
+            localStorage.setItem("username", data.username);
  
             if (data === "Welcome, admin!") {
                 setUserRole("admin");

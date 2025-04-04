@@ -1,3 +1,4 @@
+package com.librarysystem.library_system;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -78,7 +79,7 @@ class BookServiceTest {
         // Manually setting the ID for the test
         book.setId(1); // Set the ID manually for the test
 
-        when(bookRepository.findAllBooks()).thenReturn(new ArrayList<>(mockBookDatabase.values()));
+        when(bookRepository.findAllBooks()).thenReturn(Arrays.asList(book));
 
         String savedBook = bookService.addBook(book);
 
@@ -86,6 +87,82 @@ class BookServiceTest {
         
         List<Book> books = bookRepository.findAllBooks();
         assertTrue(books.contains(book));
+    }
+
+    @Test
+    void TestGettingAllBooks()
+    {
+        Book book = new Book("Book", "Author");
+        book.setId(1);
+        Book book1 = new Book("Book1", "Author1");
+        book1.setId(2);
+        Book book2 = new Book("Book2", "Author2");
+        book2.setId(3);
+
+        mockBookDatabase.put(book.getId(), book);
+        mockBookDatabase.put(book1.getId(), book1);
+        mockBookDatabase.put(book2.getId(), book2);
+
+        when(bookRepository.findAllBooks()).thenReturn(Arrays.asList(book, book1,book2));
+
+        List<Book> books = bookRepository.findAllBooks();
+
+        assertTrue(books.contains(book));
+        assertTrue(books.contains(book1));
+        assertTrue(books.contains(book2));
+    }
+
+    @Test
+    void TestGettingBooksbyTitle()
+    {
+        Book book = new Book("Book", "Author");
+        book.setId(1);
+
+        mockBookDatabase.put(book.getId(), book);
+
+        when(bookRepository.findByTitle("Book")).thenReturn(Arrays.asList(book));
+
+        List<Book> books = bookRepository.findByTitle("Book");
+
+        assertTrue(books.contains(book));
+    }
+
+    @Test
+    void TestGettingBooksbyAuthor()
+    {
+        Book book = new Book("Book", "Author");
+        book.setId(1);
+
+        mockBookDatabase.put(book.getId(), book);
+
+        when(bookRepository.findByAuthor("Author")).thenReturn(Arrays.asList(book));
+
+        List<Book> books = bookRepository.findByAuthor("Author");
+
+        assertTrue(books.contains(book));
+    }
+
+    @Test
+    void TestGettingBooksbyAvailibility()
+    {
+        Book book = new Book("Book", "Author");
+        book.setId(1);
+        mockBookDatabase.put(book.getId(), book);
+
+        User user = new User("Smit", "321", "Student");
+        user.setId(userIdCounter++); 
+        mockUserDatabase.put(user.getId(), user); 
+
+        Book falsebook = new Book("book1", "Author1", false, new Date(),user);
+        falsebook.setId(2);
+        mockBookDatabase.put(book.getId(), book);
+
+        when(bookRepository.findByIsAvailable(true)).thenReturn(Arrays.asList(book));
+
+        List<Book> books = bookRepository.findByIsAvailable(true);
+
+        assertTrue(books.contains(book));
+        assertFalse(books.contains(falsebook));
     }
 
     @Test
@@ -115,9 +192,14 @@ class BookServiceTest {
         mockUserDatabase.put(1, user); // Add user to mock database
 
       
-        Book book = new Book("Book1", "Author1", false, new Date(), user );
+        Book book = new Book("Book1", "Author1", false, new Date(), user);
+        book.setBorrowedDate(new Date());
         book.setId(1); // Manually set ID for the test
         mockBookDatabase.put(1, book);
+
+        assertNotNull(book.getBorrowedDate());
+
+        when(bookRepository.findById(1)).thenReturn(Optional.of(book));
 
         // Returning the book
         String result = bookService.returnBook(1);
@@ -143,7 +225,7 @@ class BookServiceTest {
         when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
 
         // Mock the bookRepository to return the mock books when querying by borrowedBy
-        when(bookRepository.findByBorrowedby(user)).thenReturn(Arrays.asList(book1, book2));
+        when(bookRepository.findByBorrowedBy(user)).thenReturn(Arrays.asList(book1, book2));
 
         // Mock bookRepository's findById to return books for borrowBook method
         when(bookRepository.findById(1)).thenReturn(Optional.of(book1));
@@ -169,13 +251,61 @@ class BookServiceTest {
 
         when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
 
-        String wrong = userService.authenticateUser("Smit", "wrongpassword");
+        String wrong = userService.authenticateUser("Smit", "121");
 
-        assertNull(wrong); // Check if the role is correctly returned
+        assertEquals("Incorrect", wrong);
 
         String correct = userService.authenticateUser("Smit", "120");
 
         assertEquals("Student", correct);
 
+    }
+
+    @Test
+    void testGetBooksByOverDue()
+    {
+        User user = new User("Smit", "120", "Student");
+        user.setId(1);
+        User user1 = new User("Smit1", "121", "Student");
+        user1.setId(2);
+        User user2 = new User("Smit2", "122", "Student");
+        user2.setId(3);
+
+        mockUserDatabase.put(user.getId(), user);
+        mockUserDatabase.put(user1.getId(), user1);
+        mockUserDatabase.put(user2.getId(), user2);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(calendar.MONTH, -2);
+        Date newBD = calendar.getTime();
+        
+        Book book = new Book("Book", "Author", false, new Date(), user);
+        book.setBorrowedDate(newBD);
+        book.setId(1);
+        Book book1 = new Book("Book1", "Author1", false, new Date(), user);
+        book1.setBorrowedDate(newBD);
+        book1.setId(2);
+        Book book2 = new Book("Book2", "Author2", false, new Date(), user);
+        book2.setBorrowedDate(newBD);
+        book2.setId(3);
+
+        mockBookDatabase.put(book.getId(), book);
+        mockBookDatabase.put(book1.getId(), book1);
+        mockBookDatabase.put(book2.getId(), book2);
+
+        bookService.checkOverdue("Smit");
+        bookService.checkOverdue("Smit1");
+        bookService.checkOverdue("Smit2");
+
+        when(bookRepository.findOverDueBooks(true)).thenReturn(Arrays.asList(book, book1, book2));
+
+        List<Book> overdueBooks = bookRepository.findOverDueBooks(true);
+
+        assertNotNull(overdueBooks);
+        assertEquals(3, overdueBooks.size());
+        assertTrue(overdueBooks.contains(book));
+        assertTrue(overdueBooks.contains(book1));
+        assertTrue(overdueBooks.contains(book2));
     }
 }
