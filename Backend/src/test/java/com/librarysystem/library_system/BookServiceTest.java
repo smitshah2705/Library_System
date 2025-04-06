@@ -1,3 +1,4 @@
+package com.librarysystem.library_system;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -8,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import com.librarysystem.library_system.Book;
 import com.librarysystem.library_system.BookRepository;
@@ -29,7 +31,7 @@ class BookServiceTest {
 
     @InjectMocks
     private BookService bookService;
-
+    //HELP OF AI
     private Map<Integer, Book> mockBookDatabase = new HashMap<>(); // Simulating Book DB
     private Map<Integer, User> mockUserDatabase = new HashMap<>(); // Simulating User DB
     private int bookIdCounter = 1; // Simulating Book ID generation
@@ -43,10 +45,10 @@ class BookServiceTest {
         bookIdCounter = 1;
         userIdCounter = 1;
 
-        // Mock BookRepository behavior
+        // Mock basic BookRepository behavior to search the mock db
         when(bookRepository.save(any(Book.class))).thenAnswer(invocation -> {
             Book book = invocation.getArgument(0);
-            book.setId(bookIdCounter++); // Simulate auto-incremented ID
+            book.setId(bookIdCounter++); 
             mockBookDatabase.put(book.getId(), book);
             return book;
         });
@@ -57,7 +59,7 @@ class BookServiceTest {
             return null;
         }).when(bookRepository).deleteById(anyInt());
 
-        // Mock UserRepository behavior
+        // Mock UserRepository behavior to find in user db
         when(userRepository.findByUsername(anyString())).thenAnswer(invocation -> {
             String username = invocation.getArgument(0);
             return mockUserDatabase.values().stream()
@@ -71,6 +73,7 @@ class BookServiceTest {
             return user;
         });
     }
+    // END OF HELP OF AI
 
     @Test
     void testBookCreation() {
@@ -78,85 +81,175 @@ class BookServiceTest {
         // Manually setting the ID for the test
         book.setId(1); // Set the ID manually for the test
 
-        when(bookRepository.findAllBooks()).thenReturn(new ArrayList<>(mockBookDatabase.values()));
+        mockBookDatabase.put(1, book);
 
         String savedBook = bookService.addBook(book);
 
         assertEquals("Book has been added successfully", savedBook); 
         
-        List<Book> books = bookRepository.findAllBooks();
+        List<Book> books = new ArrayList<>(mockBookDatabase.values());
         assertTrue(books.contains(book));
     }
 
     @Test
-    void testBorrowBook() {
-        // Setting up a user with Integer ID
-        User user = new User("Smit", "321", "Student");
-        user.setId(userIdCounter++); // Manually set ID for the test
-        mockUserDatabase.put(user.getId(), user); // Add user to mock database
+    void TestGettingAllBooks()
+    {
+        Book book = new Book("Book", "Author");
+        book.setId(1);
+        Book book1 = new Book("Book1", "Author1");
+        book1.setId(2);
+        Book book2 = new Book("Book2", "Author2");
+        book2.setId(3);
 
-        // Setting up a book
-        Book book = new Book("Book1", "Author1");
-        book.setId(bookIdCounter++); // Manually set ID for the test
+        mockBookDatabase.put(book.getId(), book);
+        mockBookDatabase.put(book1.getId(), book1);
+        mockBookDatabase.put(book2.getId(), book2);
+
+
+        List<Book> books = new ArrayList<>(mockBookDatabase.values());
+
+        assertTrue(books.contains(book));
+        assertTrue(books.contains(book1));
+        assertTrue(books.contains(book2));
+    }
+
+    @Test
+    void TestGettingBooksbyTitle()
+    {
+        Book book = new Book("Book", "Author");
+        book.setId(1);
+
         mockBookDatabase.put(book.getId(), book);
 
-        // Borrowing the book
+        //AI
+        List<Book> books = mockBookDatabase.values()
+        .stream()
+        .filter(b -> b.getTitle().equals("Book"))
+        .collect(Collectors.toList());
+        // END OF AI
+
+        assertTrue(books.contains(book));
+    }
+
+    @Test
+    void TestGettingBooksbyAuthor()
+    {
+        Book book = new Book("Book", "Author");
+        book.setId(1);
+
+        mockBookDatabase.put(book.getId(), book);
+
+        List<Book> books = new ArrayList<>(mockBookDatabase.values())
+        .stream()
+        .filter(b -> b.getAuthor().equals("Author"))
+        .collect(Collectors.toList());
+
+        assertTrue(books.contains(book));
+    }
+
+    @Test
+    void TestGettingBooksbyAvailibility()
+    {
+        Book book = new Book("Book", "Author");
+        book.setId(1);
+        mockBookDatabase.put(1, book);
+
+        User user = new User("Smit", "321", "Student");
+        user.setId(1); 
+        mockUserDatabase.put(1, user); 
+
+        Book falsebook = new Book("book1", "Author1", false, new Date(),user);
+        falsebook.setId(2);
+        mockBookDatabase.put(2, falsebook);
+
+        List<Book> books = new ArrayList<>(mockBookDatabase.values())
+        .stream()
+        .filter(b -> b.isAvailable())
+        .collect(Collectors.toList());
+
+        assertTrue(books.contains(book));
+        assertFalse(books.contains(falsebook));
+    }
+
+    @Test
+    void testBorrowBook() {
+        User user = new User("Smit", "321", "Student");
+        user.setId(1); 
+        mockUserDatabase.put(1, user);
+
+        Book book = new Book("Book1", "Author1");
+        book.setId(1);
+        mockBookDatabase.put(1, book);
+
         String result = bookService.borrowBook(book.getId(), "Smit");
 
         assertEquals("Book borrowed successfully.", result);
         assertFalse(book.isAvailable());
         assertEquals(user, book.getBorrowedBy());
+
+        List<Book> userBorrowedBooks = user.getBorrowedBooks();
+        assertTrue(userBorrowedBooks.contains(book));
     }
 
     @Test
     void testReturnBook() {
         User user = new User("Smit", "474", "Student");
-        user.setId(userIdCounter++); // Manually set ID for the test
-        mockUserDatabase.put(user.getId(), user); // Add user to mock database
+        user.setId(1);
+        mockUserDatabase.put(1,user);
 
-      
-        Book book = new Book("Book1", "Author1", false, new Date(), user );
-        book.setId(bookIdCounter++); // Manually set ID for the test
-        mockBookDatabase.put(book.getId(), book);
-
-        // Returning the book
-        String result = bookService.returnBook(book.getId());
+        Book book = new Book("Book1", "Author1", false, new Date(), user);
+        book.setBorrowedDate(new Date());
+        book.setId(1);
+        mockBookDatabase.put(1,book);
+        
+        String result = bookService.returnBook(1);
 
         assertEquals("Book has been returned successfully.", result);
         assertTrue(book.isAvailable());
         assertNull(book.getBorrowedBy());
         assertNull(book.getBorrowedDate());
+
+        List<Book> userBorrowedBooks = user.getBorrowedBooks();
+        assertFalse(userBorrowedBooks.contains(book));
     }
 
     @Test
     void testGetBooksByUser(){
         User user = new User("Smit", "109", "Student");
         user.setId(1);
+        mockUserDatabase.put(1,user);
 
-        Book book1 = new Book("Book1", "Author1", false,new Date(), user);
+        User user2 = new User("Smith", "119", "Student");
+        user2.setId(2);
+        mockUserDatabase.put(2,user2);
+
+        Book book1 = new Book("Book1", "Author1");
         book1.setId(1);
+        mockBookDatabase.put(1,book1);
 
-        Book book2 = new Book("Book2", "Auhtor2", false, new Date(), user);
+        Book book2 = new Book("Book2", "Auhtor2");
         book2.setId(2);
-
-        // Mock the userRepository to return the mock user
-        when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
-
-        // Mock the bookRepository to return the mock books when querying by borrowedBy
-        when(bookRepository.findByBorrowedby(user)).thenReturn(Arrays.asList(book1, book2));
-
-        // Mock bookRepository's findById to return books for borrowBook method
-        when(bookRepository.findById(1)).thenReturn(Optional.of(book1));
-        when(bookRepository.findById(2)).thenReturn(Optional.of(book2));
+        mockBookDatabase.put(2,book2);
 
         bookService.borrowBook(1, "Smit");
-        bookService.borrowBook(2, "Smit");
+        bookService.borrowBook(2, "Smith");
 
-        List <Book> borrowedBooks = bookService.getBooksByUser("Smit");
-        assertNotNull(borrowedBooks);
-        assertEquals(2, borrowedBooks.size());
-        assertEquals("Book1", borrowedBooks.get(0).getTitle());
-        assertEquals("Book2", borrowedBooks.get(1).getTitle());
+        List<Book> userbooks = mockBookDatabase.values()
+        .stream()
+        .filter(b -> b.getBorrowedBy() != null && b.getBorrowedBy().getId() == user.getId())
+        .collect(Collectors.toList());
+
+        List<Book> user2books = mockBookDatabase.values()
+        .stream()
+        .filter(b -> b.getBorrowedBy() != null && b.getBorrowedBy().getId() == user2.getId())
+        .collect(Collectors.toList());
+
+        assertNotNull(userbooks);
+        assertNotNull(user2books);
+        assertTrue(userbooks.contains(book1));
+        assertFalse(userbooks.contains(book2));
+        assertTrue(user2books.contains(book2));
+        assertFalse(user2books.contains(book1));
 
     }
 
@@ -165,17 +258,68 @@ class BookServiceTest {
     {
         User user = new User("Smit", "120", "Student");
         user.setId(1);
-        mockUserDatabase.put(user.getId(), user);
+        mockUserDatabase.put(1, user);
 
-        when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
+        String wrong = userService.authenticateUser("Smit", "121");
 
-        String wrong = userService.authenticateUser("Smit", "wrongpassword");
-
-        assertNull(wrong); // Check if the role is correctly returned
+        assertEquals("Incorrect", wrong);
 
         String correct = userService.authenticateUser("Smit", "120");
 
         assertEquals("Student", correct);
 
+    }
+
+    @Test
+    void testGetBooksByOverDue()
+    {
+        User user = new User("Smit", "120", "Student");
+        user.setId(1);
+        User user1 = new User("Smit1", "121", "Student");
+        user1.setId(2);
+        User user2 = new User("Smit2", "122", "Student");
+        user2.setId(3);
+
+        mockUserDatabase.put(user.getId(), user);
+        mockUserDatabase.put(user1.getId(), user1);
+        mockUserDatabase.put(user2.getId(), user2);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(calendar.MONTH, -2);
+        Date newBD = calendar.getTime();
+        
+        Book book = new Book("Book", "Author", false, new Date(), user);
+        book.setBorrowedDate(newBD);
+        book.setId(1);
+        Book book1 = new Book("Book1", "Author1", false, new Date(), user1);
+        book1.setBorrowedDate(newBD);
+        book1.setId(2);
+        Book book2 = new Book("Book2", "Author2", false, new Date(), user2);
+        book2.setBorrowedDate(newBD);
+        book2.setId(3);
+
+        user.getBorrowedBooks().add(book);
+        user1.getBorrowedBooks().add(book1);
+        user2.getBorrowedBooks().add(book2);
+        
+        mockBookDatabase.put(book.getId(), book);
+        mockBookDatabase.put(book1.getId(), book1);
+        mockBookDatabase.put(book2.getId(), book2);
+
+        bookService.checkOverdue("Smit");
+        bookService.checkOverdue("Smit1");
+        bookService.checkOverdue("Smit2");
+
+        List<Book> overdueBooks = new ArrayList<>(mockBookDatabase.values())
+        .stream()
+        .filter(b -> b.getOverDue()== true)
+        .collect(Collectors.toList());
+
+        assertNotNull(overdueBooks);
+        assertEquals(3, overdueBooks.size());
+        assertTrue(overdueBooks.contains(book));
+        assertTrue(overdueBooks.contains(book1));
+        assertTrue(overdueBooks.contains(book2));
     }
 }

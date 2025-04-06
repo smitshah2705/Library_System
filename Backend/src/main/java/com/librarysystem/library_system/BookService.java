@@ -43,7 +43,7 @@ public class BookService {
 
     public List<Book> getBooksByUser(String username){
         User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
-        return bookRepository.findByBorrowedby(user);
+        return bookRepository.findByBorrowedBy(user);
     }
 
     public List<Book> getBooksByOverDue()
@@ -109,21 +109,28 @@ public class BookService {
         {
             return "Book has already been returned.";
         }
-        User user = book.getBorrowedBy();
 
-        user.getBorrowedBooks().remove(book);
-        if(user.getOverDueBooks().contains(book))
+        if(book.getBorrowedDate()!= null)
         {
-            user.getOverDueBooks().remove(book);
-        }
-        userRepository.save(user);
+            User user = book.getBorrowedBy();
 
-        book.setIsAvailable(true);
-        book.setBorrowedBy(null);
-        book.setBorrowedDate(null);
-        book.setOverDue(false);
-        bookRepository.save(book);
-        return "Book has been returned successfully.";
+            user.getBorrowedBooks().remove(book);
+            if(user.getOverDueBooks().contains(book))
+            {
+                user.getOverDueBooks().remove(book);
+            }
+            userRepository.save(user);
+
+            book.setIsAvailable(true);
+            book.setBorrowedBy(null);
+            book.setBorrowedDate(null);
+            book.setOverDue(false);
+            bookRepository.save(book);
+            return "Book has been returned successfully.";
+        }
+        else{
+            return "This book has not been borrowed, or it's already returned.";
+        }
 
     }
 

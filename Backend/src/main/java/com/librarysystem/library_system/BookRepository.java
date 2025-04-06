@@ -9,7 +9,7 @@ public interface BookRepository extends CrudRepository<Book, Integer> { // CrudR
     List<Book> findByAuthor(String author);
     List<Book> findByIsAvailable(boolean isAvailable);
     List<Book> findByTitle(String title);
-    List<Book> findByBorrowedby(User user);
+    List<Book> findByBorrowedBy(User user);
     List<Book> findAllBooks();
     List<Book> findOverDueBooks(boolean overdue);//Spring uses the method name to infer the query so it wont mix it up with the availability boolean
     List<Book> findOverDueBooksForUser(User user, boolean overdue);

@@ -111,10 +111,16 @@ public class Book {
     {
         this.borrowedDate = borrowedDate;
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(borrowedDate);
-        calendar.add(calendar.DATE, 30);
-        dueDate = calendar.getTime();
+        if(borrowedDate != null)
+        {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(borrowedDate);
+            calendar.add(calendar.DATE, 30);
+            dueDate = calendar.getTime();
+        }
+        else{
+            dueDate = null;
+        }
     }
 
     public void setBorrowedBy(User user)
