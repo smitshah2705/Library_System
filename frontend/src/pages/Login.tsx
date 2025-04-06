@@ -9,8 +9,8 @@ function Login() {
 
     const handleLogin = async () => {
         try {
-            
-            const response = await fetch("http://localhost:8080/users/login", {
+            //Code for when connecting to backend
+            /*const response = await fetch("http://localhost:8080/users/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, password }),
@@ -18,8 +18,10 @@ function Login() {
             
             const data = await response.json();
             
-            localStorage.setItem("username", data.username);
- 
+            localStorage.setItem("username", data.username);*/
+            //code for testing
+            const data = "Welcome, admin!"
+
             if (data === "Welcome, admin!") {
                 setUserRole("admin");
             } else if (data === "Welcome, student!") {
