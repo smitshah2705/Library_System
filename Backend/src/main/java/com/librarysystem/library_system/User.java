@@ -6,7 +6,9 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.GeneratedValue; 
 import jakarta.persistence.GenerationType;
 import java.util.List;
-import java.util.ArrayList; 
+import jakarta.persistence.Transient;
+import java.util.ArrayList;
+
 
 @Entity
 public class User {
@@ -21,6 +23,7 @@ public class User {
     @OneToMany(mappedBy = "borrowedBy") //One to many relationship is used because oneuser can borrow multiple books.
     private List<Book> borrowedBooks = new ArrayList<Book>();
     
+    @Transient
     private List<Book> overDueBooks = new ArrayList<Book>();
 
     private User(){} 
