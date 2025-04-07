@@ -9,19 +9,19 @@ function App() {
   const [currentPage, setCurrentPage] = useState("home");
   return (
     <div
-    style={{
+    style={{       //This is for the background image, which is not in the app.css file as it needs to be the same throughout all the pages in the website
       backgroundImage: "url('/bookbackground.jpg')",
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      backgroundAttachment: "fixed",
-      height: "100vh",
+      backgroundSize: "cover",  //This makes sure that the image covers the whole area
+      backgroundPosition: "center", //Makes sure it is in the center
+      backgroundAttachment: "fixed", //This keeps the background from moving when scrolling
+      height: "100vh", 
       width: "100vw",
       display: "flex",                
       flexDirection: "column",        
-      alignItems: "center",            
-      justifyContent: "center",
+      alignItems: "center",           //align horizontally 
+      justifyContent: "center",       //align vertically
       color: "white",
-      textShadow: "2px 2px 4px rgba(0,0,0,0.7)",
+      textShadow: "2px 2px 4px rgba(0,0,0,0.7)", //shadow to make it more visible 
     }}
     >
       {currentPage === "home" && (
@@ -30,9 +30,10 @@ function App() {
           <h1>Welcome to the TES Library!</h1>
           <p>Manage your books here!</p>
           <p>Please login to continue</p>
+          {/*buttons to navigate between pages, some are only used for testing */}
           <button onClick={() => setCurrentPage("login")}>Login</button>
-          <button onClick={() => setCurrentPage("studenthome")}>studenthome</button>
-          <button onClick={() => setCurrentPage("adminhome")}>adminhome</button>
+          <button onClick={() => setCurrentPage("studenthome")}>studenthome (for testing)</button>
+          <button onClick={() => setCurrentPage("adminhome")}>adminhome (for testing)</button>
         </>
       )} 
        {currentPage === "login" && (
