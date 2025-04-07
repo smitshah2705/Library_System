@@ -36,13 +36,16 @@ function MyBookCollection() {
         alert("Book returned!");
     }
     const isOverDue = async (username: String) => {
+        //This will be the code that will be used when it is connected with backend and database
         /*try{
             const response = await fetch (`http://localhost:8080/books/checkoverdue/${username}`, {method: "PUT"});
-            console.log(await response.text());
+            const data = await response.json();
+            return data;
         }
         catch (error) {
             alert("Error checking whether overdue")
         }*/
+        //Temporay code for testing
         alert("Books Checked for overdue")
     }
     

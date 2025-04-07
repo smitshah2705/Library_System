@@ -41,11 +41,6 @@ function StudentHome() {
     }
 
 
-
-   
-
-
-
     return (
         <div className="student-home">
             <img src="/teslogotransparent.png" alt="TES" width="200" className="logo" />
