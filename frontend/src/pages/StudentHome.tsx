@@ -8,13 +8,13 @@ function StudentHome() {
 
     const handleSearch = async () => {
         try {
-            /*   (this is the actual data to be fetched)
-           const response = await fetch(`http://localhost:8080/books/title/${encodeURIComponent(bookname)}`); 
+               //(this is the actual data to be fetched)
+            /*const response = await fetch(`http://localhost:8080/books/title/${encodeURIComponent(bookname)}`); 
             const data = await response.json();
-            setBooks(data)
-            */
+            setBooks(data)*/
             
-            /* Sample data for testing*/
+            
+            // Sample data for testing
             const data = [
                 { id: 123, title: "Harry Potter", author: "J.K. Rowling", isAvailable: true },
                 { id: 141, title: "1984", author: "George Orwell", isAvailable: true },
