@@ -19,19 +19,19 @@ import com.librarysystem.library_system.User;
 import com.librarysystem.library_system.UserService;
 
 class BookServiceTest {
-
+    //HELP OF AI
     @Mock
     private BookRepository bookRepository;
 
     @Mock
     private UserRepository userRepository;
 
-    @Mock
+    @InjectMocks
     private UserService userService;
 
     @InjectMocks
     private BookService bookService;
-    //HELP OF AI
+    
     private Map<Integer, Book> mockBookDatabase = new HashMap<>(); // Simulating Book DB
     private Map<Integer, User> mockUserDatabase = new HashMap<>(); // Simulating User DB
     private int bookIdCounter = 1; // Simulating Book ID generation
