@@ -3,9 +3,9 @@ import './Login.css';
 import StudentHome from "./StudentHome";
 import AdminHome from "./AdminHome";
 function Login() {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [userRole, setUserRole] = useState("");
+    const [username, setUsername] = useState(""); //stores username input
+    const [password, setPassword] = useState(""); // stores password input
+    const [userRole, setUserRole] = useState(""); // stores role of logged in user
 
     const handleLogin = async () => {
         try {
@@ -20,25 +20,25 @@ function Login() {
             
             localStorage.setItem("username", data.username);*/
             //code for testing
-            const data = "Welcome, admin!"
+            const data = "Welcome, admin!" //placeholder 
 
-            if (data === "Welcome, admin!") {
-                setUserRole("admin");
+            if (data === "Welcome, admin!") { 
+                setUserRole("admin"); //set role as admin if that is the response that is received
             } else if (data === "Welcome, student!") {
-                setUserRole("student");
+                setUserRole("student"); // set role as student if that is the response that is recieved 
             } else {
-                alert("Invalid credentials. Please try again.");
+                alert("Invalid credentials. Please try again."); 
             }
         } catch (error) {
-            console.error("Login error:", error);
+            console.error("Login error:", error); //log and alert any errors
             alert("An error occurred. Please try again.");
         }
     };
 
     if (userRole === "admin") {
-        return <AdminHome />;
+        return <AdminHome />; //navigate user to adminhome page 
     } else if (userRole === "student") {
-        return <StudentHome />;
+        return <StudentHome />; //navigate user to studenthome page
     }
     return (
         <div>

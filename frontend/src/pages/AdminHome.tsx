@@ -5,7 +5,14 @@ function AdminHome() {
     const [bookname, setBookname] = useState("");
     const [books, setBooks] = useState<{ id: number; title: string; author: string; isAvailable: boolean }[]>([]);
     const username = localStorage.getItem("username") || "";
-
+    const [newTitle, setNewTitle] = useState("");
+    const [newAuthor, setNewAuthor] = useState("");
+    const [newAvailable, setNewAvailable] = useState(true);
+    const data = [
+        { id: 123, title: "Harry Potter", author: "J.K. Rowling", isAvailable: true },
+        { id: 141, title: "1984", author: "George Orwell", isAvailable: true },
+        { id: 531, title: "Lord of the Rings", author: "J.R.R. Tolkien", isAvailable: false }
+        ];
     const handleSearch = async () => {
         try {
             /*   (this is the actual data to be fetched)
@@ -15,11 +22,7 @@ function AdminHome() {
             */
             
             /* Sample data for testing*/
-            const data = [
-                { id: 123, title: "Harry Potter", author: "J.K. Rowling", isAvailable: true },
-                { id: 141, title: "1984", author: "George Orwell", isAvailable: true },
-                { id: 531, title: "Lord of the Rings", author: "J.R.R. Tolkien", isAvailable: false }
-            ];
+            
             const filtered = data.filter(book => book.title.includes(bookname));
             setBooks(filtered)
             
@@ -50,6 +53,24 @@ function AdminHome() {
             alert("Error Occured, unable to remove book")
         }
     }
+    const addBook = async (Title: string, Author: string, IsAvailable: boolean) => {
+        /*try {
+            const response = await fetch("http://localhost:8080/books", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ title, author, isAvailable })
+            });
+            const data = await response.json();
+            alert("Book added!");
+            setNewTitle("");
+            setNewAuthor("");
+            setNewAvailable(true);
+        } catch (error) {
+            alert("Failed to add book");
+        }*/
+        data.push({id: 1122,title: Title,author: Author,isAvailable: IsAvailable});
+        alert("Book added!");
+    };
 
     return (
         <div className="admin-home">
@@ -82,6 +103,13 @@ function AdminHome() {
                 ) : (
                     <p>No books found.</p>
                 )}
+            </div>
+            <div>
+                <h2>Add Book Section</h2>
+                <input type="text" placeholder="Enter Book Title" value={newTitle} onChange={(e) => setNewTitle(e.target.value)}/>
+                <input type="text" placeholder="Enter Author's Name" value={newAuthor} onChange={(e) => setNewAuthor(e.target.value)}/>
+                <input type="checkbox" checked={newAvailable}  onChange={() => setNewAvailable(!newAvailable)}/>
+                <button onClick={() => addBook(newTitle,newAuthor,newAvailable)}>Add</button>
             </div>
         </div>
     );
